@@ -80,6 +80,9 @@
 
 **Next Steps & Takeaways:**
 
+- One major improvement is to make the network communication more stable. Sometimes the game becomes delayed or stuck because of Wi-Fi or MQTT connection issues, so we need to improve message handling, add better reconnection logic, and reduce communication latency.
+- Through ESE5160, we learned how to build a complete connected embedded system from hardware to cloud. The lectures and assignments helped us understand PCB design, sensor and actuator integration, MQTT communication, Node-RED dashboards, and OTA firmware updates. The final project helped us combine all of these parts into one working prototype and taught us how to debug both hardware and software problems in a real system.
+
 **Project Links**:
 
 [Node Red Link](http://4.154.36.28:1880)
@@ -97,7 +100,6 @@
 ![](./images/thermal.png)
 ![](./images/altium.png)
 ![](./images/nodered.png)
-
 
 Block Diagram -- jilu
 
