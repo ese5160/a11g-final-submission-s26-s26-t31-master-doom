@@ -84,6 +84,9 @@
 
 - A Node-RED dashboard subscribes to the same MQTT broker for remote monitoring and user interaction. The system also supports OTA firmware updates over Wi-Fi, enabling wireless MCU reprogramming without physical access.
 
+![](./images/dia1.png)
+![](./images/dia2.png)
+
 **Challenges**:
 
 - On-Device CV Infeasible Due to MCU Memory Constraints
