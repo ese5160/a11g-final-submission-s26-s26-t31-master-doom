@@ -1,6 +1,9 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/Y5lYn2wb)
+# 🃏 MasterDoom — AI Texas Hold'em Poker Assistant
+**ESE5160 Spring 2026**
 
-# a11g-final-submission
+![Team](https://img.shields.io/badge/Team-31%20MasterDoom-blue)
+![MCU](https://img.shields.io/badge/MCU-SiWG917-green)
+![Model](https://img.shields.io/badge/CV-YOLOv3-purple)
 
 **Team Number: 31**
 
@@ -14,6 +17,8 @@
 **GitHub Repository URL: [https://github.com/ese5160/a11g-final-submission-s26-s26-t31-master-doom](https://github.com/ese5160/a11g-final-submission-s26-s26-t31-master-doom)**
 
 **GitHub Pages URL: [https://ese5160.github.io/a11g-final-submission-s26-s26-t31-master-doom/](https://ese5160.github.io/a11g-final-submission-s26-s26-t31-master-doom/)**
+
+---
 
 ## 1. Video Presentation
 
@@ -57,6 +62,9 @@
     Node-RED dashboard, MQTT communication, and OTA firmware updates.
   </p>
 </section>
+
+
+---
 
 ## 2. Project Summary
 
@@ -112,6 +120,8 @@ The team initially planned to use a larger touchscreen LCD for user input, but c
 
 [Altium PCBA Link](https://upenn-eselabs.365.altium.com/designs/907BC697-1F1F-4DA7-AD57-F23FF5449B87#design)
 
+---
+
 ## 3. Hardware & Software Requirements
 
 ## Hardware Requirements Specification (HRS)
@@ -138,6 +148,8 @@ The team initially planned to use a larger touchscreen LCD for user input, but c
 | SRS-06 | The Node-RED dashboard shall subscribe to the Azure MQTT broker and display live game state, detected cards, and GTO recommendations for remote monitoring. |
 | SRS-07 | The system shall support OTA firmware updates over Wi-Fi, allowing the main MCU to be reprogrammed without a physical connection. |
 
+---
+
 ## 4. Project Photos & Screenshots
 
 ![](./images/overview.png)
@@ -147,6 +159,8 @@ The team initially planned to use a larger touchscreen LCD for user input, but c
 ![](./images/nodered.png)
 ![](./images/dia1.png)
 ![](./images/dia2.png)
+
+---
 
 ## 5. Codebase
 
