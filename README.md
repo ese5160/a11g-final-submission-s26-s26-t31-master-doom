@@ -68,15 +68,38 @@
 
 **Device Functionality:**
 
--jilu
+- The MasterDoom system integrates computer vision, embedded processing, and wireless communication to deliver real-time poker decision support.
+
+- The Arducam OV2640 camera module captures images of playing cards via SPI/I2C and transmits them to a backend server over HTTP. A FastAPI server receives the image and runs inference using a custom-trained YOLOv3 model to detect each card's rank and suit. Results are published back to the MCU via a cloud-based MQTT broker.
+
+- The SiWG917 MCU (BRD2605A) receives detected card data, runs a custom GTO-based poker decision algorithm, and renders the current game state and recommended action on an SPI-connected LCD in real time. A joystick provides local menu navigation and game state input.
+
+- A Node-RED dashboard subscribes to the same MQTT broker for remote monitoring and user interaction. The system also supports OTA firmware updates over Wi-Fi, enabling wireless MCU reprogramming without physical access.
 
 **Challenges**:
 
--jilu
+- On-Device CV Infeasible Due to MCU Memory Constraints
+The original design aimed to run card recognition locally on the SiWG917. However, with only 320KB of RAM, input images had to be downscaled to 96×96 pixels — a resolution too low for reliable card rank and suit detection. The approach was abandoned in favor of a cloud-based inference pipeline using FastAPI + YOLOv3.
+
+- End-to-End Pipeline Instability Over the Internet
+Running the full pipeline — image capture, HTTP upload, YOLOv3 inference, and MQTT result delivery — over a cloud connection introduced latency and reliability issues. Network interruptions at any stage could stall or break the recognition loop, making consistent real-time performance difficult to guarantee.
+
+- SiWG917 Custom PCB Flashing Failure
+When attempting to move from the development board to a custom PCB using the SiWG917 IC, the team encountered a critical flashing issue where new firmware could not be written to the chip. Despite extensive debugging efforts, the root cause could not be resolved, and the team continued development on the standard development board.
 
 **Prototype Learnings:**
 
--jilu
+- Camera Stability and Image Quality
+The Arducam OV2640 performed reliably in practice, and the native capture resolution proved sufficient for YOLOv3 to accurately detect card rank and suit — validating the camera hardware choice despite the shift to cloud-based inference.
+
+- Form Factor Matters for Real-World Use
+A key takeaway is that miniaturizing the overall system should be a priority in future iterations. Reducing the size of all components would make the device concealable and practical enough to function as a genuine real-time poker assistant at a real table.
+
+- PCB Design and Model Training Lessons
+The custom PCB process taught the team several important hardware design principles, including debounce circuit design, avoiding copper polygons beneath the antenna to prevent RF interference, and proper trace routing. On the software side, the team gained hands-on experience with data annotation for object detection — the process of manually labeling card images to train the YOLOv3 model.
+
+- Input Method Refinement
+The team initially planned to use a larger touchscreen LCD for user input, but concluded that a smaller display paired with a joystick was better suited to the project's portability and usability goals. This change simplified the interface while keeping the device compact.
 
 **Next Steps & Takeaways:**
 
@@ -91,7 +114,29 @@
 
 ## 3. Hardware & Software Requirements
 
--jilu
+## Hardware Requirements Specification (HRS)
+
+| ID | Requirement |
+|---|---|
+| HRS-01 | The system shall use the SiWG917 (BRD2605A) as the main MCU for game logic, LCD rendering, joystick input, MQTT communication, and OTA updates. |
+| HRS-02 | The system shall use the SiWG917 (BRD2708A) as the camera node MCU, responsible for image capture and HTTP transmission to the inference server. |
+| HRS-03 | The Arducam Mini OV2640 camera module shall communicate with the camera MCU via SPI and I2C, and shall capture images at sufficient resolution for card recognition. |
+| HRS-04 | The ST7735R LCD shall be driven over SPI and shall display card detection results, game state, and GTO recommendations in real time. |
+| HRS-05 | The joystick shall provide local user input for menu navigation and manual game state entry. |
+| HRS-06 | The custom PCB shall supply a regulated 3.3V and 5V output to power all onboard components, with no copper polygons beneath the antenna region to prevent RF interference. |
+| HRS-07 | The system shall operate over a 2.4GHz Wi-Fi connection for MQTT communication and HTTP image upload. |
+
+## Software Requirements Specification (SRS)
+
+| ID | Requirement |
+|---|---|
+| SRS-01 | The card recognition pipeline (image capture → HTTP upload → YOLOv3 inference → MQTT delivery → LCD display) shall complete end-to-end in under 3 seconds under normal network conditions. |
+| SRS-02 | The YOLOv3 model, trained and annotated via Roboflow, shall achieve a card recognition accuracy of at least 90% across all 52 standard playing cards. |
+| SRS-03 | The FastAPI inference server shall receive images from the camera node, run YOLOv3 inference, and publish detected card rank and suit results to the Azure MQTT broker. |
+| SRS-04 | The main MCU shall subscribe to the Azure MQTT broker and update the LCD display within 1 second of receiving card detection results. |
+| SRS-05 | The GTO decision algorithm shall evaluate the current hand and community cards and output a recommended action (fold, call, raise, or check) for every game state update. |
+| SRS-06 | The Node-RED dashboard shall subscribe to the Azure MQTT broker and display live game state, detected cards, and GTO recommendations for remote monitoring. |
+| SRS-07 | The system shall support OTA firmware updates over Wi-Fi, allowing the main MCU to be reprogrammed without a physical connection. |
 
 ## 4. Project Photos & Screenshots
 
@@ -100,15 +145,12 @@
 ![](./images/thermal.png)
 ![](./images/altium.png)
 ![](./images/nodered.png)
-
-Block Diagram -- jilu
+![](./images/dia1.png)
+![](./images/dia2.png)
 
 ## 5. Codebase
 
-Do *not* commit any of your source code to this repository. Rather, provide links to the other GitHub repository you've already been using with your firmware.
-
-- A link to your final embedded C firmware codebases
+- Link to final embedded C firmware codebases
   [Codebases Link](https://github.com/yunzhedeng/ese5160_finalproject)
-- A link to your Node-RED dashboard code
+- Link to Node-RED dashboard code
   [Node-Red dashboard link](https://github.com/yunzhedeng/ese5160_finalproject/tree/main/mqtt)
-- Links to any other software required for the functionality of your device
